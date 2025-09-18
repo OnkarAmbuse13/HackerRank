@@ -1,22 +1,37 @@
 """
 simple_hello_world.py
 
-This program is used to log hello worlds message to console
-
+This module demonstrate a simple Hello World program
+with custom exception handling.
 """
-import logging
-def config_logger() -> logging:
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format="%(message)s",
-    )
-    return logging.getLogger(__name__)
+
+class HelloWorldError(Exception):
+    """Custom Exception raised when printing Hello World fails."""
+    
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.message = message
+        
+    def __str__(self) -> str:
+        return f"HelloWorldError: {self.message}"
+    
+def print_hello_World() -> None:
+    """Print Hello World to the console.
+    
+    Raises:
+        HelloWorldError: If printing fails
+    """
+    try:
+        print("Hello, World!")
+    except Exception as exc:
+        raise HelloWorldError("Failed to print Hello World") from exc
     
 def main() -> None:
-    logger = config_logger()
-    logger.info("hello world")
-    
-if __name__ == '__main__':
-    main()
-    
-    
+    """Main entry of the script."""
+    try:
+        print_hello_World()
+    except HelloWorldError as error:
+        print(error)
+        
+if __name__ == "__main__":
+    main()              
